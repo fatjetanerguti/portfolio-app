@@ -6,8 +6,19 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+var mysqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
+var defaultConn = builder.Configuration.GetConnectionString("DefaultConnection");
+
+if (mysqlUrl != null)
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseMySql(mysqlUrl, ServerVersion.AutoDetect(mysqlUrl)));
+}
+else
+{
+    builder.Services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(defaultConn));
+}
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
 {
@@ -47,21 +58,27 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-// Krijo admin userin automatikisht nëse nuk ekziston
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    await CreateAdminUser(services);
+    var db = services.GetRequiredService<ApplicationDbContext>();
+    db.Database.Migrate();
+    await CreateAdminUser(services, builder.Configuration);
 }
 
 app.Run();
 
-static async Task CreateAdminUser(IServiceProvider serviceProvider)
+static async Task CreateAdminUser(IServiceProvider serviceProvider, IConfiguration config)
 {
     var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
 
-    var adminEmail = "admin@portfolio.com";
-    var adminPassword = "Admin@1234";
+    var adminEmail = Environment.GetEnvironmentVariable("ADMIN_EMAIL")
+                     ?? config["AdminSettings:Email"]
+                     ?? "admin@portfolio.com";
+
+    var adminPassword = Environment.GetEnvironmentVariable("ADMIN_PASSWORD")
+                        ?? config["AdminSettings:Password"]
+                        ?? "Admin@1234";
 
     var existingUser = await userManager.FindByEmailAsync(adminEmail);
     if (existingUser == null)
