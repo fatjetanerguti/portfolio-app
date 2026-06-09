@@ -1,0 +1,497 @@
+﻿@model PortfolioApp.ViewModels.ProjectViewModel
+@{
+    ViewData["Title"] = "Edito Projekt";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="sq">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edito Projekt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #0a0a0f;
+            --bg2: #111118;
+            --card: #16161f;
+            --border: #ffffff12;
+            --accent: #7c6aff;
+            --accent2: #ff6a9b;
+            --text: #f0f0f5;
+            --muted: #8888aa;
+            --danger: #f87171;
+            --radius: 14px;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Grotesk', sans-serif;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 240px;
+            height: 100vh;
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 1.5rem;
+            z-index: 100;
+            transition: transform 0.3s;
+        }
+
+        .sidebar-logo {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .sidebar-menu {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .sidebar-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            border-radius: 10px;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            cursor: pointer;
+        }
+
+            .sidebar-item:hover {
+                background: rgba(124,106,255,0.1);
+                color: var(--text);
+            }
+
+            .sidebar-item i {
+                width: 18px;
+                text-align: center;
+            }
+
+        .sidebar-bottom {
+            border-top: 1px solid var(--border);
+            padding-top: 1rem;
+        }
+
+        .menu-toggle {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 200;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 0.5rem 0.7rem;
+            cursor: pointer;
+            color: var(--text);
+        }
+
+        .main {
+            margin-left: 240px;
+            padding: 2rem;
+        }
+
+        .page-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+            .back-btn:hover {
+                color: var(--accent);
+            }
+
+        .page-title {
+            font-family: 'Syne', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 800;
+        }
+
+        .form-card {
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 700px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.25rem;
+        }
+
+            .form-group.full {
+                grid-column: 1 / -1;
+            }
+
+        label {
+            display: block;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--muted);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        input[type="text"], input[type="url"], input[type="number"], textarea {
+            width: 100%;
+            background: #0a0a0f;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            color: var(--text);
+            font-family: inherit;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+            input:focus, textarea:focus {
+                border-color: var(--accent);
+            }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #0a0a0f;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+        }
+
+            .checkbox-group input {
+                width: 18px;
+                height: 18px;
+                accent-color: var(--accent);
+                cursor: pointer;
+            }
+
+            .checkbox-group span {
+                font-size: 0.9rem;
+                color: var(--muted);
+            }
+
+        .current-image {
+            margin-bottom: 1rem;
+        }
+
+            .current-image img {
+                width: 100%;
+                max-height: 180px;
+                object-fit: cover;
+                border-radius: 8px;
+                border: 1px solid var(--border);
+            }
+
+            .current-image p {
+                font-size: 0.8rem;
+                color: var(--muted);
+                margin-bottom: 0.5rem;
+            }
+
+        .upload-area {
+            border: 2px dashed var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.2s;
+            position: relative;
+        }
+
+            .upload-area:hover {
+                border-color: var(--accent);
+            }
+
+            .upload-area input[type="file"] {
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                padding: 0;
+                border: none;
+                background: none;
+            }
+
+        .upload-icon {
+            font-size: 1.5rem;
+            color: var(--muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .upload-text {
+            color: var(--muted);
+            font-size: 0.85rem;
+        }
+
+            .upload-text span {
+                color: var(--accent);
+                font-weight: 600;
+            }
+
+        #imagePreview {
+            margin-top: 1rem;
+            display: none;
+        }
+
+            #imagePreview img {
+                width: 100%;
+                max-height: 180px;
+                object-fit: cover;
+                border-radius: 8px;
+            }
+
+        .field-error {
+            color: var(--danger);
+            font-size: 0.8rem;
+            margin-top: 0.35rem;
+            display: block;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-save {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(135deg, var(--accent), #9b8aff);
+            color: white;
+            padding: 0.85rem 2rem;
+            border-radius: 100px;
+            border: none;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 4px 20px rgba(124,106,255,0.3);
+            transition: transform 0.2s;
+        }
+
+            .btn-save:hover {
+                transform: translateY(-2px);
+            }
+
+        .btn-cancel {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            padding: 0.85rem 2rem;
+            border-radius: 100px;
+            font-family: inherit;
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+            .btn-cancel:hover {
+                border-color: var(--muted);
+                color: var(--text);
+            }
+
+        @@media (max-width: 900px) {
+            .sidebar {
+                transform: translateX(-100%);
+            }
+
+                .sidebar.open {
+                    transform: translateX(0);
+                }
+
+            .main {
+                margin-left: 0;
+                padding: 1rem;
+                padding-top: 4rem;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <button class="menu-toggle" id="menuToggle"><i class="fas fa-bars"></i></button>
+
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-logo">FN. Admin</div>
+        <nav class="sidebar-menu">
+            <a class="sidebar-item" href="/Admin/Dashboard"><i class="fas fa-th-large"></i> Dashboard</a>
+            <a class="sidebar-item" href="/Admin/Create"><i class="fas fa-plus-circle"></i> Shto Projekt</a>
+            <a class="sidebar-item" href="/Admin/EditAbout"><i class="fas fa-user-edit"></i> Edito Profilin</a>
+            <a class="sidebar-item" href="/" target="_blank"><i class="fas fa-eye"></i> Shiko Faqen</a>
+        </nav>
+        <div class="sidebar-bottom">
+            <form method="post" asp-action="Logout" asp-controller="Admin">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="sidebar-item"><i class="fas fa-sign-out-alt"></i> Dilni</button>
+            </form>
+        </div>
+    </div>
+
+    <main class="main">
+        <div class="page-header">
+            <a href="/Admin/Dashboard" class="back-btn"><i class="fas fa-arrow-left"></i> Kthehu</a>
+            <h1 class="page-title">Edito: @Model.Title</h1>
+        </div>
+
+        <div class="form-card">
+            <form method="post" asp-action="Edit" asp-controller="Admin" enctype="multipart/form-data">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="ExistingImagePath" />
+                <div class="form-row">
+                    <div class="form-group full">
+                        <label>Titulli *</label>
+                        <input asp-for="Title" type="text" />
+                        <span asp-validation-for="Title" class="field-error"></span>
+                    </div>
+                    <div class="form-group full">
+                        <label>Përshkrim i shkurtër</label>
+                        <input asp-for="ShortDescription" type="text" />
+                    </div>
+                    <div class="form-group full">
+                        <label>Përshkrim i plotë *</label>
+                        <textarea asp-for="Description"></textarea>
+                        <span asp-validation-for="Description" class="field-error"></span>
+                    </div>
+                    <div class="form-group full">
+                        <label>Tech Stack</label>
+                        <input asp-for="TechStack" type="text" />
+                    </div>
+                    <div class="form-group">
+                        <label>GitHub URL</label>
+                        <input asp-for="GitHubUrl" type="url" />
+                    </div>
+                    <div class="form-group">
+                        <label>Live URL</label>
+                        <input asp-for="LiveUrl" type="url" />
+                    </div>
+                    <div class="form-group">
+                        <label>Rendi i shfaqjes</label>
+                        <input asp-for="DisplayOrder" type="number" min="0" />
+                    </div>
+                    <div class="form-group" style="display:flex; align-items:flex-end;">
+                        <label class="checkbox-group" style="width:100%; margin-bottom:0;">
+                            <input asp-for="IsFeatured" type="checkbox" />
+                            <span>⭐ Shëno si Featured</span>
+                        </label>
+                    </div>
+                    <div class="form-group full">
+                        <label>Imazhi</label>
+                        @if (!string.IsNullOrEmpty(Model.ExistingImagePath))
+                        {
+                            <div class="current-image">
+                                <p>Imazhi aktual:</p>
+                                <img src="@Model.ExistingImagePath" alt="Current" />
+                            </div>
+                        }
+                        <div class="upload-area">
+                            <input type="file" asp-for="ImageFile" accept="image/*" id="imageInput" />
+                            <div class="upload-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+                            <div class="upload-text">
+                                <span>Kliko për të ndryshuar</span> imazhin<br>
+                                <small>Lër bosh për të mbajtur imazhin ekzistues</small>
+                            </div>
+                        </div>
+                        <div id="imagePreview"><img id="previewImg" src="" alt="Preview" /></div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn-save"><i class="fas fa-save"></i> Ruaj Ndryshimet</button>
+                    <a href="/Admin/Dashboard" class="btn-cancel"><i class="fas fa-times"></i> Anulo</a>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('menuToggle').addEventListener('click', () =>
+            document.getElementById('sidebar').classList.toggle('open'));
+        document.getElementById('imageInput').addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    document.getElementById('previewImg').src = e.target.result;
+                    document.getElementById('imagePreview').style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+    </script>
+</body>
+</html>
