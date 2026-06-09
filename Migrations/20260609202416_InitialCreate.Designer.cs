@@ -9,10 +9,10 @@ using PortfolioApp.Data;
 
 #nullable disable
 
-namespace PortfolioApp.Data.Migrations
+namespace PortfolioApp.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260608203330_InitialCreate")]
+    [Migration("20260609202416_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -266,11 +266,12 @@ namespace PortfolioApp.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Bio = "Zhvilluese web me pasion për teknologjinë dhe krijimin e aplikacioneve moderne. E specializuar në ASP.NET Core dhe zhvillim frontend.",
-                            Email = "",
-                            FullName = "Fatjeta Neguti",
+                            Bio = "Zhvilluese Front-End e motivuar me 1+ vit trajnim dhe ekspertizë të certifikuar në HTML5, CSS3, JavaScript, React.js dhe Next.js. Kam përfunduar programin 12-mujor Brainster me rezultat 92% dhe 180 kredite. Aktualisht ndjek BSc në Teknologji Informacioni dhe Komunikimi në Universitetin e Tiranës.",
+                            Email = "fatjetanerguti8@gmail.com",
+                            FullName = "Fatjeta Nerguti",
                             GitHubUrl = "https://github.com/fatjetanerguti",
-                            Title = "Junior Web Developer"
+                            LinkedInUrl = "",
+                            Title = "Front-End Developer & ICT Student"
                         });
                 });
 
@@ -325,61 +326,60 @@ namespace PortfolioApp.Data.Migrations
                         {
                             Id = 1,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Një sistem librarie online që lejon përdoruesit të shfletojnë, lexojnë dhe menaxhojnë libra dhe e-books dixhitale.",
+                            Description = "Sistem librarie online që lejon përdoruesit të shfletojnë, lexojnë dhe menaxhojnë libra dhe e-books dixhitale. Ndërtuar me ASP.NET Core MVC dhe SQL Server.",
                             DisplayOrder = 1,
                             GitHubUrl = "https://github.com/fatjetanerguti/EBiblioteka",
                             IsFeatured = true,
                             ShortDescription = "Librari online me libra dhe e-books",
-                            TechStack = "C#, ASP.NET, SQL Server",
+                            TechStack = "C#, ASP.NET Core, SQL Server",
                             Title = "EBiblioteka"
                         },
                         new
                         {
                             Id = 2,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Projekt i zhvilluar me TypeScript.",
+                            Description = "Projekt web i ndërtuar me TypeScript duke aplikuar arkitekturë të strukturuar dhe parimet e programimit modern.",
                             DisplayOrder = 2,
                             GitHubUrl = "https://github.com/fatjetanerguti/Realproject3",
                             IsFeatured = true,
-                            ShortDescription = "Projekt me TypeScript",
-                            TechStack = "TypeScript",
+                            ShortDescription = "Projekt i avancuar me TypeScript",
+                            TechStack = "TypeScript, JavaScript",
                             Title = "Realproject3"
                         },
                         new
                         {
                             Id = 3,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Një faqe web e thjeshtë dhe elegante për prezantimin e një kafeneje.",
+                            Description = "Faqe web responsive dhe elegante për prezantimin e një kafeneje. Dizajnuar me CSS të avancuar dhe HTML5 semantik.",
                             DisplayOrder = 3,
                             GitHubUrl = "https://github.com/fatjetanerguti/coffee-website",
                             IsFeatured = false,
-                            LiveUrl = "https://github.com/fatjetanerguti/coffee-website",
-                            ShortDescription = "Faqe web për kafene",
-                            TechStack = "HTML, CSS, JavaScript",
+                            ShortDescription = "Faqe web elegante për kafene",
+                            TechStack = "HTML5, CSS3, JavaScript",
                             Title = "Coffee Website"
                         },
                         new
                         {
                             Id = 4,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Projekt i shkurtër i zhvilluar gjatë periudhës së internshipit, duke demonstruar aftësitë e zhvillimit web.",
+                            Description = "Projekt web i realizuar gjatë periudhës së internshipit, duke demonstruar aftësi praktike në zhvillim frontend me HTML dhe CSS.",
                             DisplayOrder = 4,
                             GitHubUrl = "https://github.com/fatjetanerguti/FatjetaProjektIntership",
                             IsFeatured = false,
                             ShortDescription = "Projekt i zhvilluar gjatë internshipit",
-                            TechStack = "HTML, CSS",
+                            TechStack = "HTML5, CSS3",
                             Title = "Projekt Intership"
                         },
                         new
                         {
                             Id = 5,
                             CreatedAt = new DateTime(2024, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            Description = "Një projekt i vogël dhe minimalist për prezantimin e një kafeneje, me dizajn të pastër dhe modern.",
+                            Description = "Projekt i vogël dhe minimalist për prezantimin e një kafeneje, me dizajn të pastër dhe modern duke përdorur HTML dhe CSS.",
                             DisplayOrder = 5,
                             GitHubUrl = "https://github.com/fatjetanerguti/FatiCofeeShop",
                             IsFeatured = false,
                             ShortDescription = "Projekt minimalist për kafene",
-                            TechStack = "HTML, CSS",
+                            TechStack = "HTML5, CSS3",
                             Title = "Fati Coffee Shop"
                         });
                 });
@@ -418,50 +418,98 @@ namespace PortfolioApp.Data.Migrations
                         new
                         {
                             Id = 1,
-                            Category = "Backend",
+                            Category = "Frontend",
                             DisplayOrder = 1,
-                            Level = 80,
-                            Name = "C#"
+                            Level = 92,
+                            Name = "HTML5 & CSS3"
                         },
                         new
                         {
                             Id = 2,
-                            Category = "Backend",
+                            Category = "Frontend",
                             DisplayOrder = 2,
-                            Level = 75,
-                            Name = "ASP.NET Core"
+                            Level = 80,
+                            Name = "JavaScript"
                         },
                         new
                         {
                             Id = 3,
-                            Category = "Database",
+                            Category = "Frontend",
                             DisplayOrder = 3,
-                            Level = 70,
-                            Name = "SQL Server"
+                            Level = 85,
+                            Name = "React.js"
                         },
                         new
                         {
                             Id = 4,
                             Category = "Frontend",
                             DisplayOrder = 4,
-                            Level = 65,
-                            Name = "TypeScript"
+                            Level = 78,
+                            Name = "Next.js"
                         },
                         new
                         {
                             Id = 5,
                             Category = "Frontend",
                             DisplayOrder = 5,
-                            Level = 85,
-                            Name = "HTML & CSS"
+                            Level = 70,
+                            Name = "TypeScript"
                         },
                         new
                         {
                             Id = 6,
                             Category = "Frontend",
                             DisplayOrder = 6,
+                            Level = 85,
+                            Name = "Bootstrap"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Category = "Design",
+                            DisplayOrder = 7,
+                            Level = 80,
+                            Name = "Figma / UX·UI"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Category = "Design",
+                            DisplayOrder = 8,
+                            Level = 90,
+                            Name = "Responsive Design"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            Category = "Backend",
+                            DisplayOrder = 9,
+                            Level = 72,
+                            Name = "C# / ASP.NET Core"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            Category = "Database",
+                            DisplayOrder = 10,
                             Level = 70,
-                            Name = "JavaScript"
+                            Name = "MySQL / SQL Server"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            Category = "Tools",
+                            DisplayOrder = 11,
+                            Level = 82,
+                            Name = "Git & GitHub"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            Category = "Tools",
+                            DisplayOrder = 12,
+                            Level = 55,
+                            Name = "Docker"
                         });
                 });
 
