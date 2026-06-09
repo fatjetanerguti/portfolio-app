@@ -15,5 +15,6 @@ RUN dotnet publish "./PortfolioApp.csproj" -c Release -o /app/publish /p:UseAppH
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
+RUN mkdir -p /app/data
 RUN mkdir -p wwwroot/uploads/projects wwwroot/uploads/profile
 ENTRYPOINT ["dotnet", "PortfolioApp.dll"]

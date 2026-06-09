@@ -6,18 +6,17 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-var mysqlUrl = Environment.GetEnvironmentVariable("MYSQL_URL");
-var defaultConn = builder.Configuration.GetConnectionString("DefaultConnection");
-
-if (mysqlUrl != null)
+// SQLite për Railway, SQL Server për local
+if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseMySql(mysqlUrl, ServerVersion.AutoDetect(mysqlUrl)));
+        options.UseSqlServer(
+            builder.Configuration.GetConnectionString("DefaultConnection")));
 }
 else
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlServer(defaultConn));
+        options.UseSqlite("Data Source=/app/data/portfolio.db"));
 }
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
@@ -62,6 +61,13 @@ using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
     var db = services.GetRequiredService<ApplicationDbContext>();
+
+    // Krijo direktorinë për SQLite nëse nuk ekziston
+    if (!app.Environment.IsDevelopment())
+    {
+        Directory.CreateDirectory("/app/data");
+    }
+
     db.Database.Migrate();
     await CreateAdminUser(services, builder.Configuration);
 }
