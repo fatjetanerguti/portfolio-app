@@ -1,12 +1,12 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using PortfolioApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
 
-// SQLite për Railway, SQL Server për local
 if (builder.Environment.IsDevelopment())
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -16,7 +16,9 @@ if (builder.Environment.IsDevelopment())
 else
 {
     builder.Services.AddDbContext<ApplicationDbContext>(options =>
-        options.UseSqlite("Data Source=/app/data/portfolio.db"));
+        options.UseSqlite("Data Source=portfolio.db")
+               .ConfigureWarnings(w => w.Ignore(
+                   RelationalEventId.PendingModelChangesWarning)));
 }
 
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
@@ -62,13 +64,18 @@ using (var scope = app.Services.CreateScope())
     var services = scope.ServiceProvider;
     var db = services.GetRequiredService<ApplicationDbContext>();
 
-    // Krijo direktorinë për SQLite nëse nuk ekziston
-    if (!app.Environment.IsDevelopment())
+    if (app.Environment.IsDevelopment())
     {
-        Directory.CreateDirectory("/app/data");
+        db.Database.Migrate();
+    }
+    else
+    {
+        // Krijo të gjitha tabelat direkt pa migration validation
+        db.Database.OpenConnection();
+        db.Database.ExecuteSqlRaw("PRAGMA journal_mode=WAL;");
+        db.Database.EnsureCreated();
     }
 
-    db.Database.Migrate();
     await CreateAdminUser(services, builder.Configuration);
 }
 
